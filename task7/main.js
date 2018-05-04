@@ -29,16 +29,17 @@ class List {
             this.wrap.appendChild(this.list)
         }
         this.wrap.addEventListener("click", (e) => {
-            e.preventDefault()
-            // console.log(this.list.children.length)
+            e.preventDefault();
+            console.log(e)
             const target = e.target;
-            console.log(target.className)
             target.className === "add-button" ? this.addElement() : null
             target.className === "remove-button" ? this.removeElement() : null
             target.className.indexOf("list-item") >= 0 ? this.checkElement(target) : null
         })
-
-        // this.add.addEventListener("click",this.addElement.bind(this));
+        this.wrap.addEventListener("keydown", (e) => {
+            e.preventDefault();
+            console.log(e)
+        })
     }
     addElement() {
         if (this.input.value !== "") {
@@ -53,9 +54,9 @@ class List {
     removeElement() {
         const liArray = [...this.list.children];
         const length = liArray.length;
-        const regexp = /checked/;
+        
         liArray.forEach(item => {
-            item.className.search(regexp) > 0 ? item.remove() : null
+            item.className.indexOf("checked") >= 0 ? item.remove() : null
         })
         console.log("REMOVE ELEMENT")
 
@@ -63,12 +64,9 @@ class List {
     checkElement(current) {
         const nameOfClass = current.className;
         const checked = nameOfClass.indexOf("checked") >= 0;
-        const listItem = nameOfClass.indexOf("list-item") >=0;
-        console.log(checked && listItem)
-        
+        const listItem = nameOfClass.indexOf("list-item") >=0;        
         checked && listItem ? current.classList.remove("checked") : 
         current.classList.add("checked")
-        
         // nameOfClass.search(regexp2) >= 0 && nameOfClass.search(regexp1) < 0 ? 
         //     current.classList.add("checked") : 
         //     ameOfClass.search ? dfjdsjfdsl :
