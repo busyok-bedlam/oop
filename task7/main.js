@@ -5,6 +5,16 @@ var opt = {
     itemElement: 'li',
     arrOfItems: ['1', '2', '3', '4', '5']
 }
+
+
+const createElemWithClass = (tag,...classes) => {
+    const elem = document.createElement(tag);
+    for(let item of classes){
+        elem.classList.add(item);
+    }
+    return elem;
+}
+
 class List {
     constructor(destElem, options) {
         this.destElem = destElem;
@@ -34,6 +44,7 @@ class List {
             target.className === "add-button" ? this.addElement() : null
             target.className === "remove-button" && confirm("Are you sure ?") ? this.removeElement() : null
             target.className.indexOf("list-item") >= 0 ? this.checkElement(target) : null
+            e.ctrlKey === true ? alert("CTRL KEY + TRUE") : null
         })
         this.wrap.addEventListener("keydown", e => {
             // console.log(e.target);
@@ -42,10 +53,17 @@ class List {
             target.className === "field" && e.keyCode === 13 ? this.addElement() : null
             
         })
-        window.addEventListener("keydown", (e) => {
-            console.log(e.target);
-            console.log(e)
-        })
+        // window.addEventListener("keydown", (e) => {
+        //     e.preventDefault();
+        //     console.log(e.target);
+        //     console.log(e.keyCode);
+        //     e.ctrlKey === true ? (() => {
+        //         this.wrap.addEventListener("click",(e) => {
+        //             e.preventDefault()
+        //             alert(e.target)
+        //         })
+        //     })() : null;
+        // })
     }
     addElement() {
         if (this.input.value !== "") {
@@ -79,24 +97,19 @@ class List {
 const renderInitialPage = () => {
     let block = document.createDocumentFragment();
 
-    let wrap = document.createElement("div");
-    wrap.className = "wrap"
+    let wrap = createElemWithClass('div','wrap','dggg');
 
-    let input = document.createElement("input");
+    let input = createElemWithClass('input','field')
     input.setAttribute("type", "text");
     input.setAttribute("placeholder", "hello");
-    input.className = "field";
-
-    let addButton = document.createElement("span");
+    let addButton = createElemWithClass("span","add-button");
     addButton.innerText = "ADD";
     addButton.setAttribute("type", "button");
 
-    let removeButton = document.createElement("span");
+    let removeButton = createElemWithClass("span","remove-button");
     removeButton.innerText = "DEL";
     removeButton.setAttribute("type", "button");
 
-    addButton.className = "add-button";
-    removeButton.className = "remove-button";
     wrap.appendChild(input);
     wrap.appendChild(addButton);
     wrap.appendChild(removeButton);
