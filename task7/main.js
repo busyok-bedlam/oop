@@ -5,7 +5,6 @@ var opt = {
     itemElement: 'li',
     arrOfItems: ['1', '2', '3', '4', '5']
 }
-
 class List {
     constructor(destElem, options) {
         this.destElem = destElem;
@@ -30,14 +29,21 @@ class List {
         }
         this.wrap.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log(e)
+            // console.log(e)
             const target = e.target;
             target.className === "add-button" ? this.addElement() : null
-            target.className === "remove-button" ? this.removeElement() : null
+            target.className === "remove-button" && confirm("Are you sure ?") ? this.removeElement() : null
             target.className.indexOf("list-item") >= 0 ? this.checkElement(target) : null
         })
-        this.wrap.addEventListener("keydown", (e) => {
-            e.preventDefault();
+        this.wrap.addEventListener("keydown", e => {
+            // console.log(e.target);
+            console.log(e.keyCode)
+            const target = e.target;
+            target.className === "field" && e.keyCode === 13 ? this.addElement() : null
+            
+        })
+        window.addEventListener("keydown", (e) => {
+            console.log(e.target);
             console.log(e)
         })
     }
@@ -54,7 +60,6 @@ class List {
     removeElement() {
         const liArray = [...this.list.children];
         const length = liArray.length;
-        
         liArray.forEach(item => {
             item.className.indexOf("checked") >= 0 ? item.remove() : null
         })
@@ -67,17 +72,9 @@ class List {
         const listItem = nameOfClass.indexOf("list-item") >=0;        
         checked && listItem ? current.classList.remove("checked") : 
         current.classList.add("checked")
-        // nameOfClass.search(regexp2) >= 0 && nameOfClass.search(regexp1) < 0 ? 
-        //     current.classList.add("checked") : 
-        //     ameOfClass.search ? dfjdsjfdsl :
-        
     }
 
 }
-
-
-
-
 
 const renderInitialPage = () => {
     let block = document.createDocumentFragment();
@@ -86,17 +83,17 @@ const renderInitialPage = () => {
     wrap.className = "wrap"
 
     let input = document.createElement("input");
+    input.setAttribute("type", "text");
     input.setAttribute("placeholder", "hello");
     input.className = "field";
 
-    let addButton = document.createElement("input");
-    addButton.setAttribute("value", "+");
+    let addButton = document.createElement("span");
+    addButton.innerText = "ADD";
     addButton.setAttribute("type", "button");
 
-    let removeButton = document.createElement("input");
-    removeButton.setAttribute("value", "-");
+    let removeButton = document.createElement("span");
+    removeButton.innerText = "DEL";
     removeButton.setAttribute("type", "button");
-
 
     addButton.className = "add-button";
     removeButton.className = "remove-button";
@@ -104,14 +101,11 @@ const renderInitialPage = () => {
     wrap.appendChild(addButton);
     wrap.appendChild(removeButton);
 
-
     block.appendChild(wrap)
     document.body.appendChild(block)
 }
-
-
 (() => {
     renderInitialPage();
     var list1 = new List(document.body, opt);
-
+    // console.log(confirm("are you sure"))
 })()
